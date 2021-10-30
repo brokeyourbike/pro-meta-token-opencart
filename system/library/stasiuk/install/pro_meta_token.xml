@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>pro_meta_token</name>
+    <code>pro_meta_token</code>
+    <description>PRO Meta Token</description>
+    <version>0.0.1</version>
+    <author><![CDATA[Ivan Stasiuk<br/><a href="https://stasi.uk">Get Help</a>]]></author>
+    <link>https://stasi.uk</link>
+
+    <file path="admin/controller/common/header.php">
+        <operation error="skip">
+            <search><![CDATA[return $this->load->view('common/header', $data);]]></search>
+            <add position="before"><![CDATA[
+                /* PRO_META_TOKEN START */
+                $data['pro_meta_token'] = false;
+                if (isset($this->session->data['token'])) {
+                    $data['pro_meta_token'] = $this->session->data['token'];
+                }
+                if (isset($this->session->data['user_token'])) {
+                    $data['pro_meta_token'] = $this->session->data['user_token'];
+                }
+                /* PRO_META_TOKEN END */
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/common/header.twig">
+        <operation error="skip">
+            <search><![CDATA[<head>]]></search>
+            <add position="after"><![CDATA[
+                <!-- PRO_META_TOKEN START -->
+                <meta name="opencart-token" content="{{ pro_meta_token }}" />
+                <!-- PRO_META_TOKEN END -->
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/common/header.tpl">
+        <operation error="skip">
+            <search><![CDATA[<head>]]></search>
+            <add position="after"><![CDATA[
+                <!-- PRO_META_TOKEN START -->
+                <?php if (isset($pro_meta_token): ?>
+                <meta name="opencart-token" content="<?php echo $pro_meta_token; ?>" />
+                <?php endif; ?>
+                <!-- PRO_META_TOKEN END -->
+            ]]></add>
+        </operation>
+    </file>
+
+</modification>
